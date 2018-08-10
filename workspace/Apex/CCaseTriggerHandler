@@ -1,0 +1,17 @@
+public with sharing class CCaseTriggerHandler {
+	CS__c settings = new CS__c();
+
+	public static beforeInsert(List<Case> newCases) {
+		Integer numCasesThisMonth = (Integer) [SELECT COUNT(Id) FROM Case WHERE CreatedDate = THIS_MONTH AND OwnerId = :UserInfo.getUserId())];
+		
+		if (numCasesThisMonth + oldCases.size() > settings.MaxCasesPerMonth__c) {
+			for (Case oldCase : oldCases) {		
+				oldCase.addError('Too many cases created this month for user ' + user.FirstName + ' ' + user.LastName + '(' + user.id + '): ' + settings.MaxCasesPerMonth__c);
+				// optional: return (so it stops functionality past this point)
+			}
+		} else {
+			user.CasesCreated__c += oldCases.size();
+			upsert user;
+		}
+	}
+}

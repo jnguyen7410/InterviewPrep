@@ -1,0 +1,14 @@
+public class TestFactory {
+	
+	public void createCase() {
+		return new Case(Name='JN Test', Status='New', Origin='Web', ...);
+	}
+
+	public void createUser() {
+		return createUser(0);
+	}
+
+	public void createUser(Integer numCasesCreated) {
+		return new User(FirstName='JN', LastName='User', CasesCreated__c = numCasesCreated, );
+	}
+}

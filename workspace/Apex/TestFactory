@@ -1,0 +1,28 @@
+public class CCaseTriggerHandlerTest {
+	@testSetup 
+	public void setup() {
+		// if you want, you can test by user 
+		User user1 = createUser();
+		User user2 = createUser(99)
+		Case c = TestFactory.createCase();
+		CS__c settings = new CS__c();
+	}
+
+	static testMethod casesInsertSuccess() {
+		System.runAs(user1) {
+			insert c; 
+		}
+		User u = (User) [SELECT Id, CasesCreated__c FROM User WHERE Id = :user1.Id];
+		assert u.CasesCreated == 1;
+	}
+
+	static testmethod casesInsertFailure() {
+		System.runAs(user2) {
+			try{
+				insert c; 
+			} catch (Exception e) {
+				assert e.message.equals('Too many cases created this month for user JN User (' + user2.Id + '): ' + settings.MaxCasesPerMonth__c);	
+			}	
+		}
+	}
+}
